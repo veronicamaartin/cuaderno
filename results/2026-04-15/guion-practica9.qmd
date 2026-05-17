@@ -25,7 +25,7 @@ install.packages('phangorn')
 
 ```{r}
 library(phangorn)
-mtdna <- read.phyDat('../../data/mtDNA.fasta', format = 'fasta')
+mtdna <- read.phyDat('../../data/mtDNA.fasta.txt', format = 'fasta')
 ```
 
 Ahora, los datos han sido cargados en el objeto `mtdna` (de clase `phyDAT`). Con la **consola** de R se puede utilizar la función `glance()`para echarle un vistazo o incluso para generar una imagen de alineamiento con `ìmage()`.Con el paquete `Biostrings`de Bioconductor se puede crear un objeto de clase `DNAStringSet`con às.StringSet(mDNA)\`, al que se le pueden aplicar muchas funciones.
@@ -470,6 +470,14 @@ La tasa de mutación global corresponde a rate = 1.15857e-08
 Número de sustituciones por sitio.
 
 -   ¿Cuánto tiempo dice el árbol que divergimos de los chimpancés? (Puedes usar la función `cophenetic()`, puesto que en el árbol datado las longitudes de las ramas están en años).
+
+```{r}
+dist_tiempos <- cophenetic(mt_ml_clock$tree) 
+fila_humano <- grep("H.s.modern", rownames(dist_tiempos))[1]
+fila_chimp  <- grep("P.troglodytes", rownames(dist_tiempos))[1]
+tiempodivergencia <- dist_tiempos[fila_humano, fila_chimp]/2
+tiempodivergencia
+```
 :::
 
 ## Estimación de edades

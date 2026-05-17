@@ -191,3 +191,56 @@ Se observa en el archivo de texto:
 
 En un gráfico de k-meros, para muestras heterocigotas debería haber dos picos. El pico menor se encuentra alrededor de la cobertura heterocigota.
 :::
+
+Los ensamblajes primario y por haplotipos se presentan en formato GFA. Para extraer las secuencias en formato FASTA podemos usar el pequeño script siguiente, en lenguaje AWK, desde el terminal de Bash: 
+
+## Calidad del ensamblaje
+
+Para obtener las estadísticas del ensamblaje utilizaremos el programa compleasm (Huang and Li 2023), que no está instalado en el ordenador virtual. Está programado en Python y depende del módulo pandas de Python. En WSL, este módulo o paquete probablemente pueda instalarse con apt install python3-pandas. Alternativamente, en los sistemas con conda podéis hacer conda install pandas. En el ordenador virtual, el módulo pandas ya está disponible.
+
+esto en el terminal
+
+```{bash}
+conda install pandas
+```
+
+```{bash}
+cd ~/bin
+wget https://github.com/huangnengCSU/compleasm/releases/download/v0.2.7/compleasm-0.2.7_x64-linux.tar.bz2
+tar -jxvf compleasm-0.2.7_x64-linux.tar.bz2
+```
+
+En adelante supondré que compleasm.py está en \~/bin/compleasm_kit. El programa necesita descargar la lista de genes típica del linaje al que pertenece el ensamblaje. En nuestro caso, el linaje es el de las Brassicales. La orden siguiente puede tomar más de 10 minutos.
+
+```{bash}
+if [ ! -e asm1_eval/summary.txt ]; then
+   python3 ~/bin/compleasm_kit/compleasm.py run \
+      -t 2 -l brassicales -a asm1/At4.fa -o asm1_eval
+fi
+```
+
+::: {.callout-note icon="false"}
+### Ejercicio 4
+
+1.  Consulta la ayuda de `compleasm.py`y averigua que significan los argumentos utilizados.
+
+-   -t: número de threads
+-   -l: especifica el linaje
+-   -a: especifica el archivo de ensamblaje
+-   -o: especifica el directorio de salida
+:::
+
+## Visualización del grafo
+
+Desafortunadamente, no existe todavía ningún paquete de R para visualizar ensamblajes como grafos de fragmentos a partir de archivos .gfa. Uno de los visualizadores más populares es bandage, una aplicación gráfica que puede instalarse fácilmente en cualquier sistema operativo, pero que no ofrece interfaz por línea de comandos.
+
+::: {.callout-note icon="false"}
+### Ejercicio 5
+
+Instala bandage, carga el grafo del ensamblaje realizado y genera una figura. Puedes añadir la figura al informe HTML mediante la sitaxis siguiente:
+
+![grafo del ensamblaje](grafo_pr10.png)
+:::
+
+
+
